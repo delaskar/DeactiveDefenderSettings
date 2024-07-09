@@ -5,7 +5,6 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 Start-Process PowerShell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force;`"" -Verb RunAs
 
 # Desactiva las notificaciones de Windows Defender antes de realizar cambios
-Set-MpPreference -DisableNotifications $true # Desactiva todas las notificaciones
 Set-MpPreference -UILockdown $true          # Desactiva las notificaciones de amenazas graves
 
 # Desactiva la supervisión en tiempo real
