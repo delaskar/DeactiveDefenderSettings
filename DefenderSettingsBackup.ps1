@@ -1,5 +1,5 @@
 # Solicita al usuario que ingrese la ruta de almacenamiento para el archivo de respaldo
-$backupPath = Read-Host "Enter the full path: "
+$backupPath = Read-Host "Enter the full path:"
 
 # Verifica si la carpeta de la ruta proporcionada existe, si no, la crea
 $directory = Split-Path -Path $backupPath
