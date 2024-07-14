@@ -1,50 +1,54 @@
-# Restaurar la política de ejecución de PowerShell al estado predeterminado (usualmente Restricted o AllSigned)
-Set-ExecutionPolicy -ExecutionPolicy Restricted -Scope LocalMachine -Force
+# Intenta cambiar la política de ejecución sin confirmación
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process -Force
 
-# Reactivar las notificaciones de Windows Defender
-Set-MpPreference -UILockdown $false
+# Si no es posible, intenta requerir confirmación automática para 'All' (Opción 'A')
+Start-Process PowerShell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command `"Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope LocalMachine -Force;`"" -Verb RunAs
 
-# Habilitar la protección en tiempo real
-Set-MpPreference -DisableRealtimeMonitoring $false
+# Desactiva las notificaciones de Windows Defender antes de realizar cambios
+Set-MpPreference -UILockdown $true          # Desactiva las notificaciones de amenazas graves
 
-# Habilitar el monitoreo de comportamiento
-Set-MpPreference -DisableBehaviorMonitoring $false
+# Desactivar la protección en tiempo real
+Set-MpPreference -DisableRealtimeMonitoring $true
 
-# Habilitar el escaneo de scripts
-Set-MpPreference -DisableScriptScanning $false
+# Desactivar el monitoreo de comportamiento
+Set-MpPreference -DisableBehaviorMonitoring $true
 
-# Habilitar la protección de red
-Set-MpPreference -EnableNetworkProtection 1
+# Desactivar el escaneo de scripts
+Set-MpPreference -DisableScriptScanning $true
 
-# Habilitar la protección de carpetas controladas
-Set-MpPreference -EnableControlledFolderAccess 1
+# Desactivar la protección de red
+Set-MpPreference -EnableNetworkProtection 0
 
-# Habilitar la protección contra aplicaciones potencialmente no deseadas
-Set-MpPreference -PUAProtection 1
+# Desactivar la protección de carpetas controladas
+Set-MpPreference -EnableControlledFolderAccess 0
 
-# Habilitar el escaneo de dispositivos removibles
-Set-MpPreference -DisableRemovableDriveScanning $false
+# Desactivar la protección contra aplicaciones potencialmente no deseadas
+Set-MpPreference -PUAProtection 0
 
-# Habilitar el escaneo de archivos de red en escaneos completos
-Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan $false
+# Desactivar el escaneo de dispositivos removibles
+Set-MpPreference -DisableRemovableDriveScanning $true
 
-# Habilitar el escaneo de archivos de correo electrónico
-Set-MpPreference -DisableEmailScanning $false
+# Desactivar el escaneo de archivos de red en escaneos completos
+Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan $true
 
-# Habilitar la protección IOAV
-Set-MpPreference -DisableIOAVProtection $false
+# Desactivar el escaneo de archivos de correo electrónico
+Set-MpPreference -DisableEmailScanning $true
 
-# Habilitar el uso de proxy según configuración del sistema
+# Desactivar la protección IOAV
+Set-MpPreference -DisableIOAVProtection $true
+
+# Deshabilitar el uso del proxy exclusivamente
 Set-MpPreference -ForceUseProxyOnly $false
 
-# Restablecer la acción predeterminada para amenazas graves a la configuración recomendada (generalmente Quarantine o Remove)
-Set-MpPreference -HighThreatDefaultAction 6  # Cambiar 6 al valor por defecto adecuado, usualmente 0 (Quarantine) o 2 (Remove)
+# Configurar la acción predeterminada para amenazas graves a "Permitir" (Cuidado con esto)
+Set-MpPreference -HighThreatDefaultAction 6  # 6 es generalmente para "Permitir", dependiendo del sistema puede variar
 
-# Restablecer la acción predeterminada para amenazas moderadas y bajas a la configuración recomendada
-Set-MpPreference -ModerateThreatDefaultAction 0 -LowThreatDefaultAction 0  # Cambiar a los valores por defecto adecuados, generalmente 0 (Quarantine)
+# Configurar la acción predeterminada para amenazas moderadas y bajas a "Permitir"
+Set-MpPreference -ModerateThreatDefaultAction 6 -LowThreatDefaultAction 6
 
-# Reactivar la recopilación de muestras
-Set-MpPreference -SubmitSamplesConsent 1
+# Desactivar la recopilación de muestras
+Set-MpPreference -SubmitSamplesConsent 0
 
 # Guardar los cambios y reiniciar los servicios necesarios para que los cambios tengan efecto
 Restart-Service WinDefend
+
