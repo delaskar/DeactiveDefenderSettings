@@ -50,5 +50,7 @@ Set-MpPreference -ModerateThreatDefaultAction 6 -LowThreatDefaultAction 6
 Set-MpPreference -SubmitSamplesConsent 0
 
 # Guardar los cambios y reiniciar los servicios necesarios para que los cambios tengan efecto
-Restart-Service WinDefend
+Set-Service -Name WinDefend -StartupType Disabled
+Restart-Service -Name WinDefend -Force
+
 
